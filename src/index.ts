@@ -1,1 +1,1 @@
-console.log("Hello from Shift")
+export * from "./action"
