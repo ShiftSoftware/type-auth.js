@@ -4,7 +4,7 @@ import {
   DecimalAction,
   ReadWriteAction,
   ReadWriteDeleteAction,
-} from "../../src"
+} from "../../src/action"
 
 class CRMActions {
   public static readonly Customers = new ReadWriteDeleteAction("Customers")
