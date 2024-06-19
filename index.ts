@@ -1,7 +1,3 @@
-import CRMActions from "./tests/shared/CRMActions"
-import DataLevelActions from "./tests/shared/DataLevelActions"
-import SystemActions from "./tests/shared/SystemActions"
+import { getTypeAuthContext } from "./tests/getTypeAuthContext"
 
-console.log(CRMActions)
-console.log(SystemActions)
-console.log(DataLevelActions)
+console.log(getTypeAuthContext({}))

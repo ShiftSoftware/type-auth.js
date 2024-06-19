@@ -1,37 +1,34 @@
 import {
   ReadAction,
+  ActionTree,
   TextAction,
   DecimalAction,
   ReadWriteAction,
   ReadWriteDeleteAction,
 } from "../../src/action"
 
-class CRMActions {
-  public static readonly Customers = new ReadWriteDeleteAction("Customers")
+const CRMActions: ActionTree = {
+  Customers: new ReadWriteDeleteAction("Customers"),
 
-  public static readonly DiscountVouchers = new ReadWriteDeleteAction(
-    "Discount Vouchers"
-  )
+  DiscountVouchers: new ReadWriteDeleteAction("Discount Vouchers"),
 
-  public static readonly DiscountValue = new TextAction("Sale Discount", {
+  DiscountValue: new TextAction("Sale Discount", {
     description: "",
     minimumAccess: "0",
     maximumAccess: "100",
     comparer: (a, b) => (a && b ? Math.max(+a, +b).toString() : null),
-  })
+  }),
 
-  public static readonly DecimalDiscount = new DecimalAction(
-    "Sale Discount (Decimal)",
-    { minimumAccess: 0, maximumAccess: 100 }
-  )
+  DecimalDiscount: new DecimalAction("Sale Discount (Decimal)", {
+    minimumAccess: 0,
+    maximumAccess: 100,
+  }),
 
-  public static readonly Tickets = new ReadWriteAction("Tickets")
+  Tickets: new ReadWriteAction("Tickets"),
 
-  public static readonly SocialMediaComments = new ReadAction(
-    "Social Media Comments"
-  )
+  SocialMediaComments: new ReadAction("Social Media Comments"),
 
-  public static readonly WorkSchedule = new TextAction("Work Schedule", {
+  WorkSchedule: new TextAction("Work Schedule", {
     description:
       "One or more time slots allowed for operation. Certain actions are not allowed outside work schedule.",
     maximumAccess: "00:00:00 - 23:59:59",
@@ -43,7 +40,7 @@ class CRMActions {
 
       return joined.join(", ")
     },
-  })
+  }),
 }
 
 export default CRMActions
