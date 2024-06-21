@@ -108,8 +108,9 @@ export class TypeAuthContextHelper {
           if (selectedAction)
             return this.populateActionBank(selectedAction, accessCursor)
         } else {
-          if (Array.isArray(value)) {
+          if (Array.isArray(value) && key === actionCursor.typeName) {
             const itemAction = actionCursor.action as Action
+
             this.ActionBank.push(
               new ActionBankItem({
                 action: itemAction,
@@ -120,10 +121,11 @@ export class TypeAuthContextHelper {
 
             return
           } else if (
-            typeof value === "number" ||
-            typeof value === "string" ||
-            typeof value === "boolean" ||
-            typeof value === "number"
+            (typeof value === "number" ||
+              typeof value === "string" ||
+              typeof value === "boolean" ||
+              typeof value === "number") &&
+            key === actionCursor.typeName
           ) {
             const itemAction = actionCursor.action as Action
             this.ActionBank.push(

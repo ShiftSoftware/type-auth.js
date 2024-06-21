@@ -3,7 +3,12 @@ import { isEqual } from "lodash"
 import { describe, it } from "vitest"
 import { expect } from "vitest"
 import { getTypeAuthContext } from "./shared/getTypeAuthContext"
-import { affiliates, CRMAgent, superAdmin } from "./shared/AccessTreeExamples"
+import {
+  affiliates,
+  CRMAgent,
+  salesAdmin,
+  superAdmin,
+} from "./shared/AccessTreeExamples"
 
 describe("Generating access tree", () => {
   it("Same context 1", () => {
@@ -28,5 +33,13 @@ describe("Generating access tree", () => {
     var accessTree = tAuth.generateAccessTree(tAuth)
 
     expect(isEqual(accessTree, superAdmin)).toBe(true)
+  })
+
+  it("Same context 4", () => {
+    var tAuth = getTypeAuthContext(salesAdmin)
+
+    var accessTree = tAuth.generateAccessTree(tAuth)
+
+    expect(isEqual(accessTree, salesAdmin)).toBe(true)
   })
 })

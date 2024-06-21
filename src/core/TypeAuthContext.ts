@@ -127,8 +127,6 @@ export class TypeAuthContext {
     //       ...x.subActionBankItems,
     //     ])
 
-    //     console.log(actionBankItems)
-    //     console.log("============")
     //   }
     // }
 
@@ -136,7 +134,6 @@ export class TypeAuthContext {
 
     reducer.contextHelper.ActionBank.forEach((actionAccess) => {
       const objOrder = actionAccess.type.split(" -> ")
-      console.log(objOrder)
 
       const possibleValues = actionAccess.accessValue || actionAccess.accessList
       this.createPath(generatedAccessList, objOrder, possibleValues, 0)
