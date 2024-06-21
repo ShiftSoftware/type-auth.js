@@ -136,6 +136,8 @@ export class TypeAuthContext {
 
     reducer.contextHelper.ActionBank.forEach((actionAccess) => {
       const objOrder = actionAccess.type.split(" -> ")
+      console.log(objOrder)
+
       const possibleValues = actionAccess.accessValue || actionAccess.accessList
       this.createPath(generatedAccessList, objOrder, possibleValues, 0)
     })
@@ -144,7 +146,7 @@ export class TypeAuthContext {
   }
 
   createPath(parent: any, path: string[], value: any, idx: number) {
-    if (idx === path.length - 2) {
+    if ((idx === 0 && path.length === 1) || idx === path.length - 2) {
       parent[path[idx]] = value
       return
     } else if (!parent[path[idx]]) {
