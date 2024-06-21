@@ -1,0 +1,217 @@
+{
+  "dynamicSubitem": false,
+  "wildCardAccess": [],
+  "actionTreeItems": [
+    {
+      "dynamicSubitem": false,
+      "wildCardAccess": [],
+      "actionTreeItems": [
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [
+            {
+              "dynamicSubitem": false,
+              "wildCardAccess": [],
+              "actionTreeItems": [],
+              "typeName": "MultipleSession",
+              "type": "SystemActions -> Login -> MultipleSession -> BooleanAction",
+              "displayName": "Multiple Login Sessions",
+              "displayDescription": "Ability to have multiple sessions. Or Be logged in on multiple browsers/devices at once.",
+              "action": {
+                "type": 3,
+                "name": "Multiple Login Sessions",
+                "description": "Ability to have multiple sessions. Or Be logged in on multiple browsers/devices at once."
+              }
+            },
+            {
+              "dynamicSubitem": false,
+              "wildCardAccess": [],
+              "actionTreeItems": [],
+              "typeName": "DestroyOtherSession",
+              "type": "SystemActions -> Login -> DestroyOtherSession -> BooleanAction",
+              "displayName": "Destroy Other Sessions",
+              "displayDescription": "Ability to destroy other login sessions. Or Logout from other browsers/devices when trying to login on a new browser/device.",
+              "action": {
+                "type": 3,
+                "name": "Destroy Other Sessions",
+                "description": "Ability to destroy other login sessions. Or Logout from other browsers/devices when trying to login on a new browser/device."
+              }
+            }
+          ],
+          "typeName": "Login",
+          "displayName": "Login",
+          "type": "SystemActions -> Login"
+        },
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [
+            {
+              "dynamicSubitem": false,
+              "wildCardAccess": [],
+              "actionTreeItems": [],
+              "typeName": "Users",
+              "type": "SystemActions -> UserModule -> Users -> ReadWriteDeleteAction",
+              "displayName": "User Access",
+              "action": {
+                "type": 2,
+                "name": "User Access"
+              }
+            },
+            {
+              "dynamicSubitem": false,
+              "wildCardAccess": [],
+              "actionTreeItems": [],
+              "typeName": "SetOrResetPassword",
+              "type": "SystemActions -> UserModule -> SetOrResetPassword -> BooleanAction",
+              "displayName": "Set or Reset Passwords",
+              "displayDescription": "Ability to Set or Reset Users' Passwords.",
+              "action": {
+                "type": 3,
+                "name": "Set or Reset Passwords",
+                "description": "Ability to Set or Reset Users' Passwords."
+              }
+            },
+            {
+              "dynamicSubitem": false,
+              "wildCardAccess": [],
+              "actionTreeItems": [],
+              "typeName": "DestroyLoginSessions",
+              "type": "SystemActions -> UserModule -> DestroyLoginSessions -> BooleanAction",
+              "displayName": "Destroy Login Sessions",
+              "displayDescription": "Ability to force users to logout from browsers/devices they're already logged in.",
+              "action": {
+                "type": 3,
+                "name": "Destroy Login Sessions",
+                "description": "Ability to force users to logout from browsers/devices they're already logged in."
+              }
+            },
+            {
+              "dynamicSubitem": false,
+              "wildCardAccess": [],
+              "actionTreeItems": [],
+              "typeName": "Roles",
+              "type": "SystemActions -> UserModule -> Roles -> ReadWriteDeleteAction",
+              "displayName": "Role Access",
+              "action": {
+                "type": 2,
+                "name": "Role Access"
+              }
+            }
+          ],
+          "typeName": "UserModule",
+          "displayName": "Users",
+          "displayDescription": "Actions Related to the Users Module",
+          "type": "SystemActions -> UserModule"
+        }
+      ],
+      "typeName": "SystemActions",
+      "displayName": "System Actions",
+      "displayDescription": "Actions related to the System Module and Admistration.",
+      "type": "SystemActions"
+    },
+    {
+      "dynamicSubitem": false,
+      "wildCardAccess": [],
+      "actionTreeItems": [
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [],
+          "typeName": "Customers",
+          "type": "CRMActions -> Customers -> ReadWriteDeleteAction",
+          "displayName": "Customers",
+          "action": {
+            "type": 2,
+            "name": "Customers"
+          }
+        },
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [],
+          "typeName": "DiscountVouchers",
+          "type": "CRMActions -> DiscountVouchers -> ReadWriteDeleteAction",
+          "displayName": "Discount Vouchers",
+          "action": {
+            "type": 2,
+            "name": "Discount Vouchers"
+          }
+        },
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [],
+          "typeName": "DiscountValue",
+          "type": "CRMActions -> DiscountValue -> TextAction",
+          "displayName": "Sale Discount",
+          "action": {
+            "type": 4,
+            "name": "Sale Discount",
+            "minimumAccess": "0",
+            "maximumAccess": "100"
+          }
+        },
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [],
+          "typeName": "DecimalDiscount",
+          "type": "CRMActions -> DecimalDiscount -> DecimalAction",
+          "displayName": "Sale Discount (Decimal)",
+          "action": {
+            "type": 4,
+            "name": "Sale Discount (Decimal)",
+            "minimumAccess": "0",
+            "maximumAccess": "100"
+          }
+        },
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [],
+          "typeName": "Tickets",
+          "type": "CRMActions -> Tickets -> ReadWriteAction",
+          "displayName": "Tickets",
+          "action": {
+            "type": 1,
+            "name": "Tickets"
+          }
+        },
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [],
+          "typeName": "SocialMediaComments",
+          "type": "CRMActions -> SocialMediaComments -> ReadAction",
+          "displayName": "Social Media Comments",
+          "action": {
+            "type": 0,
+            "name": "Social Media Comments"
+          }
+        },
+        {
+          "dynamicSubitem": false,
+          "wildCardAccess": [],
+          "actionTreeItems": [],
+          "typeName": "WorkSchedule",
+          "type": "CRMActions -> WorkSchedule -> TextAction",
+          "displayName": "Work Schedule",
+          "displayDescription": "One or more time slots allowed for operation. Certain actions are not allowed outside work schedule.",
+          "action": {
+            "type": 4,
+            "name": "Work Schedule",
+            "description": "One or more time slots allowed for operation. Certain actions are not allowed outside work schedule.",
+            "maximumAccess": "00:00:00 - 23:59:59"
+          }
+        }
+      ],
+      "typeName": "CRMActions",
+      "displayName": "CRM Actions",
+      "displayDescription": "Actions Related to the CRM Module.",
+      "type": "CRMActions"
+    }
+  ],
+  "typeName": "Root"
+}

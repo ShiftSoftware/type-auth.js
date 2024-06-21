@@ -1,7 +1,7 @@
 import { ActionType } from "./constants"
 
 // Abstraction for all type of actions
-class baseAction {
+export class baseAction {
   // Friendly name for identifying the Action.
   name?: string
 
@@ -42,6 +42,8 @@ export class DynamicAction extends baseAction {
   id?: string
 
   items: ItemsStructure = []
+
+  isDynamic = true
 
   expand(items: ItemsStructure, addSelf = false, addEmptyOrNull = false): void {
     this.items = [...items]

@@ -9,17 +9,24 @@ import {
 } from "../../src/action"
 
 export const dataLevelActions: ActionTree = {
-  Cities: new DynamicBooleanAction("Cities"),
-  Countries: new DynamicReadAction("Countries"),
-  Companies: new DynamicReadWriteAction("Companies"),
-  Departments: new DynamicReadWriteDeleteAction("Departments"),
-  DiscountByDepartment: new DynamicTextAction("Discount", {
-    minimumAccess: "0",
-    maximumAccess: "100",
-    comparer: (a, b) => (a && b ? Math.max(+a, +b).toString() : null),
-  }),
-  DiscountByDepartmentDecimal: new DynamicDecimalAction("Discount (Decimal)", {
-    minimumAccess: 0,
-    maximumAccess: 100,
-  }),
+  DataLevel: {
+    DisplayName: "Data Level Actions",
+    DisplayDescription: "Actions Data Level Access.",
+    Cities: new DynamicBooleanAction("Cities"),
+    Countries: new DynamicReadAction("Countries"),
+    Companies: new DynamicReadWriteAction("Companies"),
+    Departments: new DynamicReadWriteDeleteAction("Departments"),
+    DiscountByDepartment: new DynamicTextAction("Discount", {
+      minimumAccess: "0",
+      maximumAccess: "100",
+      comparer: (a, b) => (a && b ? Math.max(+a, +b).toString() : null),
+    }),
+    DiscountByDepartmentDecimal: new DynamicDecimalAction(
+      "Discount (Decimal)",
+      {
+        minimumAccess: 0,
+        maximumAccess: 100,
+      }
+    ),
+  },
 }

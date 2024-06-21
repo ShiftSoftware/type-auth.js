@@ -31,13 +31,13 @@ type readWrite = ReadWriteAction | DynamicReadWriteAction
 type readWriteDelete = ReadWriteDeleteAction | DynamicReadWriteDeleteAction
 
 export type ActionBranch =
-  | text
-  | read
-  | bool
-  | action
-  | decimal
-  | readWrite
-  | readWriteDelete
+  | (text | read | bool | action | decimal | readWrite | readWriteDelete)
+  | branchInfo
+
+type branchInfo = {
+  DisplayName?: string
+  DisplayDescription?: string
+}
 
 export type ActionTree = {
   [key: string]: ActionBranch | ActionTree

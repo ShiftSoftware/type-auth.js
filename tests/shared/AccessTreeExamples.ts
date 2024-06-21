@@ -1,4 +1,4 @@
-import { Access, AccessTree } from "../src/access"
+import { Access, AccessTree } from "../../src/access"
 
 export const superAdmin: AccessTree = {
   CRMActions: [Access.Read, Access.Write, Access.Delete, Access.Maximum],
