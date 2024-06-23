@@ -1,7 +1,7 @@
 import saveToFile from "../../saveToFile"
-import { AccessTree } from "../access"
-import { ActionTree, ActionTreeItem, DynamicAction } from "../action"
+import { Access, AccessTree } from "../access"
 import { TypeAuthContextHelper } from "./TypeAuthContextHelper"
+import { ActionTree, ActionTreeItem, baseAction } from "../action"
 
 export class TypeAuthContext {
   private actionTrees: Array<ActionTree>
@@ -20,6 +20,18 @@ export class TypeAuthContext {
     this.actionTree = this.contextHelper.generateActionTree(actionTrees)
 
     this.contextHelper.populateActionBank(this.actionTree, accessTrees)
+  }
+
+  canRead(action: baseAction): boolean {
+    return this.contextHelper.can(action, Access.Read)
+  }
+
+  canWrite(action: baseAction): boolean {
+    return this.contextHelper.can(action, Access.Write)
+  }
+
+  canDelete(action: baseAction): boolean {
+    return this.contextHelper.can(action, Access.Delete)
   }
 
   public generateAccessTree(

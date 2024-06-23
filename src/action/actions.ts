@@ -5,6 +5,8 @@ export class baseAction {
   // Friendly name for identifying the Action.
   name?: string
 
+  actionPath: string[] = []
+
   // Not all actions are the same. They could be a bool, Read/Write combo, or a more complicated data structure represented as a String.
   type: ActionType
 

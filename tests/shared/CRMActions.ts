@@ -7,7 +7,7 @@ import {
   ReadWriteDeleteAction,
 } from "../../src/action"
 
-const CRMActions: ActionTree = {
+const CRMActions = {
   CRMActions: {
     DisplayName: "CRM Actions",
     DisplayDescription: "Actions Related to the CRM Module.",

@@ -4,7 +4,7 @@ import {
   ReadWriteDeleteAction,
 } from "../../src/action"
 
-export const systemActions: ActionTree = {
+export const systemActions = {
   SystemActions: {
     DisplayName: "System Actions",
     DisplayDescription:

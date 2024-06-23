@@ -4,7 +4,7 @@ export * from "./constants"
 export * from "./ActionTreeItem"
 export * from "./ActionBankItem"
 
-// export * from "./actionBankItem"
+export * from "./actionProxy"
 
 export * from "./text"
 export * from "./read"

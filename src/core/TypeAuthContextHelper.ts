@@ -1,4 +1,4 @@
-import { AccessTree } from "../access"
+import { Access, AccessTree } from "../access"
 import {
   Action,
   ActionTree,
@@ -19,11 +19,7 @@ const recursiveActionAppending = (
     Object.entries(actionParent).forEach(
       ([key, value]: [string, ActionTree | ActionBranch]) => {
         const currentKeyBank = [...keyBank, key]
-        const { DisplayDescription, DisplayName, ...rest } = value as {
-          DisplayDescription?: string
-          DisplayName?: string
-          rest: ActionTree | ActionBranch
-        }
+        const { DisplayDescription, DisplayName, ...rest } = value as ActionTree
 
         const childItem = new ActionTreeItem()
 
@@ -72,6 +68,18 @@ export class TypeAuthContextHelper {
 
   constructor() {
     // this.actionBank = []
+  }
+
+  can(actionToMatch: baseAction, accessTypeToCheck: Access): boolean {
+    const targetAction = this.ActionBank.find(
+      (item) =>
+        item.type.split(" -> ").slice(0, -1).join() ===
+        actionToMatch.actionPath.join()
+    )
+
+    if (targetAction) return targetAction.accessList.includes(accessTypeToCheck)
+
+    return false
   }
 
   generateActionTree(
@@ -153,7 +161,6 @@ export class TypeAuthContextHelper {
         }
       })
     })
-    // saveToFile(log)
   }
 
   locateActionInBank(actionToCheck: baseAction): Array<ActionBankItem> {
