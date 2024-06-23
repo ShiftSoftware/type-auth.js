@@ -34,6 +34,10 @@ export class TypeAuthContext {
     return this.contextHelper.can(action, Access.Delete)
   }
 
+  accessValue(action: baseAction): string | number {
+    return this.contextHelper.accessValue(action)
+  }
+
   public generateAccessTree(
     reducer: TypeAuthContext,
     preserver?: TypeAuthContext

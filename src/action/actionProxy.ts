@@ -4,9 +4,10 @@ function actionPathProxy<T extends object>(obj: T, path: string[] = []): T {
   const handler: ProxyHandler<T> = {
     get(target: any, prop: string, receiver) {
       path.push(prop)
+
       if (target[prop] instanceof baseAction) {
         target[prop].actionPath = [...path]
-        while (path.length !== 0) path.pop()
+        path.pop()
         return target[prop]
       }
       const value = Reflect.get(target, prop, receiver) as T

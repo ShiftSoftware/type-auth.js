@@ -28,13 +28,12 @@ type Configuration = {
   */
 
 export class TextAction extends Action {
-  maximumAccess?: string
-  minimumAccess?: string
+  maximumAccess: string = ""
+  minimumAccess: string = ""
 
   merger?: UserDefinedFunctions
   comparer?: UserDefinedFunctions
 
-  constructor(name?: string, configuration?: Configuration)
   constructor(name?: string, configuration?: Configuration) {
     super(ActionType.Text)
 

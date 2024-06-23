@@ -7,6 +7,8 @@ import {
   ActionBankItem,
   baseAction,
   DynamicAction,
+  TextAction,
+  DecimalAction,
 } from "../action"
 import { TypeAuthContext } from "./TypeAuthContext"
 
@@ -70,16 +72,49 @@ export class TypeAuthContextHelper {
     // this.actionBank = []
   }
 
-  can(actionToMatch: baseAction, accessTypeToCheck: Access): boolean {
+  private getAction(actionToMatch: baseAction): ActionBankItem | undefined {
     const targetAction = this.ActionBank.find(
       (item) =>
         item.type.split(" -> ").slice(0, -1).join() ===
         actionToMatch.actionPath.join()
     )
 
+    return targetAction
+  }
+
+  can(actionToMatch: baseAction, accessTypeToCheck: Access): boolean {
+    const targetAction = this.getAction(actionToMatch)
+
     if (targetAction) return targetAction.accessList.includes(accessTypeToCheck)
 
     return false
+  }
+
+  accessValue(actionToMatch: baseAction): number | string {
+    const targetAction = this.getAction(actionToMatch)
+
+    if (targetAction) {
+      const action = targetAction.action as TextAction | DecimalAction
+      const accessValue = targetAction.accessValue as string | number
+      try {
+        const minimumValidation = Math.max(+action.minimumAccess, +accessValue)
+        const maximumValidation = Math.min(
+          minimumValidation,
+          +action.maximumAccess
+        )
+
+        const validatedValue =
+          typeof accessValue === "string"
+            ? maximumValidation.toString()
+            : maximumValidation
+
+        return validatedValue
+      } catch (error) {
+        return action.minimumAccess
+      }
+    }
+
+    return "0"
   }
 
   generateActionTree(
