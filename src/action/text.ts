@@ -28,8 +28,8 @@ type Configuration = {
   */
 
 export class TextAction extends Action {
-  maximumAccess: string = ""
-  minimumAccess: string = ""
+  maximumAccess: string | null = null
+  minimumAccess: string | null = null
 
   merger?: UserDefinedFunctions
   comparer?: UserDefinedFunctions

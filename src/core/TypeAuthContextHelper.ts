@@ -96,21 +96,28 @@ export class TypeAuthContextHelper {
     if (targetAction) {
       const action = targetAction.action as TextAction | DecimalAction
       const accessValue = targetAction.accessValue as string | number
+
       try {
-        const minimumValidation = Math.max(+action.minimumAccess, +accessValue)
-        const maximumValidation = Math.min(
-          minimumValidation,
-          +action.maximumAccess
-        )
+        if (action.minimumAccess !== null && action.maximumAccess !== null) {
+          const minimumValidation = Math.max(
+            +action.minimumAccess,
+            +accessValue
+          )
+          const maximumValidation = Math.min(
+            minimumValidation,
+            +action.maximumAccess
+          )
 
-        const validatedValue =
-          typeof accessValue === "string"
-            ? maximumValidation.toString()
-            : maximumValidation
+          const validatedValue =
+            typeof accessValue === "string"
+              ? maximumValidation.toString()
+              : maximumValidation
 
-        return validatedValue
+          return validatedValue
+        }
+        return accessValue
       } catch (error) {
-        return action.minimumAccess
+        return action.minimumAccess ? action.minimumAccess : ""
       }
     }
 

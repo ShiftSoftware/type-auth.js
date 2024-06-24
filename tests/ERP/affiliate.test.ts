@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest"
 
-import { TypeAuthContext } from "../../src/core/TypeAuthContext"
-
-import { actionProxy } from "../../src/action"
+import CRMActions from "../shared/CRMActions"
+import { timeWithinRange } from "../shared/helper"
 import { affiliates } from "../shared/AccessTreeExamples"
 import { getTypeAuthContext } from "../shared/getTypeAuthContext"
 
-import CRMActions from "../shared/CRMActions"
+import { timeSpan } from "../../src/utils"
+import { actionProxy } from "../../src/action"
+import { TypeAuthContext } from "../../src/core"
 
 const CRM = actionProxy(CRMActions).CRMActions
 
@@ -42,5 +43,13 @@ describe("Affiliate", () => {
     const tAuth: TypeAuthContext = getTypeAuthContext(affiliates)
 
     expect(tAuth.canRead(CRM.SocialMediaComments)).toBe(false)
+  })
+
+  it("Work at 20 to 21", () => {
+    expect(timeWithinRange(timeSpan(20, 15, 0), affiliates)).toBe(true)
+  })
+
+  it("Can't work outside 20 to 21", () => {
+    expect(timeWithinRange(timeSpan(17, 0, 0), affiliates)).toBe(false)
   })
 })
