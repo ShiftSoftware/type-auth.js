@@ -1,26 +1,35 @@
 import { baseAction } from "./actions"
 
-function actionPathProxy<T extends object>(obj: T, path: string[] = []): T {
-  const handler: ProxyHandler<T> = {
-    get(target: any, prop: string, receiver) {
-      path.push(prop)
+const isReturnable = <T>(value: T): boolean => {
+  return (
+    Array.isArray(value) ||
+    typeof value === "number" ||
+    typeof value === "string" ||
+    value === null ||
+    value === undefined
+  )
+}
 
-      if (target[prop] instanceof baseAction) {
-        target[prop].actionPath = [...path]
-        path.pop()
-        return target[prop]
-      }
-      const value = Reflect.get(target, prop, receiver) as T
+const proxyHandler = {
+  typeAuthPath: [],
+  get(target: any, property: string) {
+    const newTypeAuthPath = [...this.typeAuthPath, property]
 
-      return actionPathProxy(value, path)
-    },
-  }
+    const value = Reflect.get(target, property)
+    if (isReturnable(value)) return value
+    else if (value instanceof baseAction) {
+      value.actionPath = newTypeAuthPath
+      return value
+    }
 
-  const proxy = new Proxy(obj, handler)
-
-  return proxy as T
+    return new Proxy(value, {
+      ...proxyHandler,
+      // @ts-ignore
+      typeAuthPath: newTypeAuthPath,
+    })
+  },
 }
 
 export function actionProxy<T extends object>(obj: T): T {
-  return actionPathProxy(obj)
+  return new Proxy<T>(obj, proxyHandler)
 }

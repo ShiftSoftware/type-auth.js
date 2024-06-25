@@ -25,7 +25,7 @@ const CRMActions = {
 
     DecimalDiscount: new DecimalAction("Sale Discount (Decimal)", {
       minimumAccess: 0,
-      maximumAccess: 100,
+      maximumAccess: 100.0,
     }),
 
     Tickets: new ReadWriteAction("Tickets"),

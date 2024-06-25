@@ -10,7 +10,6 @@ import {
   TextAction,
   DecimalAction,
 } from "../action"
-import { TypeAuthContext } from "./TypeAuthContext"
 
 const recursiveActionAppending = (
   children: Array<ActionTree>,
@@ -27,8 +26,10 @@ const recursiveActionAppending = (
 
         childItem.typeName = key
 
+        // @ts-ignore
         if (DisplayName) childItem.displayName = DisplayName
         if (DisplayDescription)
+          // @ts-ignore
           childItem.displayDescription = DisplayDescription
 
         if (
@@ -72,52 +73,118 @@ export class TypeAuthContextHelper {
     // this.actionBank = []
   }
 
-  private getAction(actionToMatch: baseAction): ActionBankItem | undefined {
-    const targetAction = this.ActionBank.find(
-      (item) =>
-        item.type.split(" -> ").slice(0, -1).join() ===
-        actionToMatch.actionPath.join()
-    )
+  private getActions(actionToMatch: baseAction): ActionBankItem[] {
+    const targetActions = this.ActionBank.filter((item) => {
+      const itemPath = item.type.split(" -> ")
+      const targetPath = actionToMatch.actionPath
 
-    return targetAction
+      if (!item.action) {
+        const checkingDepth = Math.min(itemPath.length, targetPath.length)
+        for (let idx = 0; idx < checkingDepth; idx++) {
+          if (itemPath[idx] === targetPath[idx]) {
+            if (Array.isArray(item.accessList) && item.accessList.length > 0)
+              return true
+          } else break
+        }
+      }
+
+      return itemPath.slice(0, -1).join() === targetPath.join()
+    })
+
+    return targetActions
   }
 
   can(actionToMatch: baseAction, accessTypeToCheck: Access): boolean {
-    const targetAction = this.getAction(actionToMatch)
+    const targetActions = this.getActions(actionToMatch)
 
-    if (targetAction) return targetAction.accessList.includes(accessTypeToCheck)
+    for (let index = 0; index < targetActions.length; index++) {
+      const targetAction = targetActions[index]
+
+      if (targetAction.accessList.includes(accessTypeToCheck)) return true
+    }
 
     return false
   }
 
-  accessValue(actionToMatch: baseAction): number | string {
-    const targetAction = this.getAction(actionToMatch)
+  private accessValueWildCard(
+    targetAction: ActionBankItem,
+    actionToMatch: baseAction,
+    actionTrees: ActionTree[] = []
+  ): number | string {
+    let targetTextAction: TextAction | null = null
+    for (let i = 0; i < actionTrees.length; i++) {
+      const actionTree = actionTrees[i]
 
-    if (targetAction) {
-      const action = targetAction.action as TextAction | DecimalAction
-      const accessValue = targetAction.accessValue as string | number
+      let subPaths: ActionTree = actionTree
 
-      try {
-        if (action.minimumAccess !== null && action.maximumAccess !== null) {
-          const minimumValidation = Math.max(
-            +action.minimumAccess,
-            +accessValue
-          )
-          const maximumValidation = Math.min(
-            minimumValidation,
-            +action.maximumAccess
-          )
+      for (let y = 0; y < actionToMatch.actionPath.length; y++) {
+        const targetField = actionToMatch.actionPath[y]
 
-          const validatedValue =
-            typeof accessValue === "string"
-              ? maximumValidation.toString()
-              : maximumValidation
+        if (subPaths[targetField])
+          subPaths = subPaths[targetField] as ActionTree
+      }
+      if (subPaths instanceof TextAction) {
+        targetTextAction = subPaths as TextAction
+        break
+      }
+    }
 
-          return validatedValue
+    let returnValue: string | number
+
+    if (targetAction.accessList.includes(Access.Maximum))
+      returnValue = targetTextAction?.maximumAccess || ""
+    else returnValue = targetTextAction?.minimumAccess || ""
+
+    return targetTextAction instanceof DecimalAction
+      ? +returnValue
+      : returnValue
+  }
+
+  accessValue(
+    actionToMatch: baseAction,
+    actionTrees: ActionTree[] = []
+  ): number | string {
+    const targetActions = this.getActions(actionToMatch)
+
+    for (let idx = 0; idx < targetActions.length; idx++) {
+      let targetAction = targetActions[idx]
+
+      if (
+        Array.isArray(targetAction.accessList) &&
+        targetAction.accessList.length
+      )
+        return this.accessValueWildCard(
+          targetAction,
+          actionToMatch,
+          actionTrees
+        )
+
+      if (targetAction) {
+        const action = targetAction.action as TextAction | DecimalAction
+        const accessValue = targetAction.accessValue as string | number
+
+        try {
+          if (action.minimumAccess !== null && action.maximumAccess !== null) {
+            const minimumValidation = Math.max(
+              +action.minimumAccess,
+              +accessValue
+            )
+            const maximumValidation = Math.min(
+              minimumValidation,
+              +action.maximumAccess
+            )
+
+            const validatedValue =
+              typeof accessValue === "string"
+                ? maximumValidation.toString()
+                : maximumValidation
+
+            return validatedValue
+          }
+          return accessValue
+        } catch (error) {
+          return action.minimumAccess ? action.minimumAccess : ""
         }
-        return accessValue
-      } catch (error) {
-        return action.minimumAccess ? action.minimumAccess : ""
       }
     }
 

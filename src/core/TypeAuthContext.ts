@@ -13,13 +13,24 @@ export class TypeAuthContext {
 
   static selfReferenceKey = "_shift_software_type_auth_core_self_reference"
 
-  constructor(accessTrees: Array<AccessTree>, actionTrees: Array<ActionTree>) {
+  constructor(
+    accessTrees: Array<AccessTree> | AccessTree,
+    actionTrees: Array<ActionTree> | ActionTree = []
+  ) {
+    if (!Array.isArray(accessTrees)) accessTrees = [accessTrees]
+    if (!Array.isArray(actionTrees)) actionTrees = [actionTrees]
+
     this.contextHelper = new TypeAuthContextHelper()
     this.accessTree = accessTrees
     this.actionTrees = actionTrees
+
     this.actionTree = this.contextHelper.generateActionTree(actionTrees)
 
     this.contextHelper.populateActionBank(this.actionTree, accessTrees)
+  }
+
+  canAccess(action: baseAction): boolean {
+    return this.contextHelper.can(action, Access.Maximum)
   }
 
   canRead(action: baseAction): boolean {
@@ -35,7 +46,7 @@ export class TypeAuthContext {
   }
 
   accessValue(action: baseAction): string | number {
-    return this.contextHelper.accessValue(action)
+    return this.contextHelper.accessValue(action, this.actionTrees)
   }
 
   public generateAccessTree(
