@@ -1,19 +1,19 @@
 import saveToFile from "../../saveToFile"
 import { Access, AccessTree } from "../access"
+import { ActionTreeNode, ActionBase } from "../action"
 import { TypeAuthContextHelper } from "./TypeAuthContextHelper"
-import { ActionTree, ActionTreeNode, ActionBase } from "../action"
 
-export class TypeAuthContext {
+export class TypeAuthContext<T> {
   private accessTrees: AccessTree[] // TODO: Not used yet
-  private actionTrees: ActionTree[]
+  private actionTrees: T[]
 
   private actionTree: ActionTreeNode
 
-  private typeAuthContextHelper: TypeAuthContextHelper
+  private typeAuthContextHelper: TypeAuthContextHelper<T>
 
   constructor(
     accessTrees: AccessTree[] | AccessTree,
-    actionTrees: ActionTree[] | ActionTree = []
+    actionTrees: T[] | T = []
   ) {
     if (Array.isArray(accessTrees)) this.accessTrees = accessTrees
     else this.accessTrees = [accessTrees]

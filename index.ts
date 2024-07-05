@@ -1,3 +1,6 @@
-import { CRMActions } from "./tests/shared/CRMActions"
+import { CRMActions } from "./examples"
+import { TypeAuthContext } from "./src/core/TypeAuthContext"
 
-console.log(CRMActions.Description)
+const tAuth = new TypeAuthContext([], [])
+
+console.log(tAuth)

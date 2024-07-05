@@ -1,7 +1,6 @@
 import { Access, AccessTree } from "../access"
 import {
   Action,
-  ActionTree,
   ActionBranch,
   ActionTreeNode,
   ActionBankItem,
@@ -12,53 +11,53 @@ import {
   BooleanAction,
 } from "../action"
 
-const recursiveActionAppending = (
-  children: Array<ActionTree>,
+function recursiveActionAppending<T>(
+  children: T[],
   root: ActionTreeNode,
-  keyBank: Array<string> = []
-): ActionTreeNode => {
-  children.forEach((actionParent: ActionTree | ActionBranch) => {
-    // Object.entries(actionParent).forEach(
-    //   ([key, value]: [string, ActionTree | ActionBranch]) => {
-    //     const currentKeyBank = [...keyBank, key]
-    //     const { DisplayDescription, DisplayName, ...rest } = value as ActionTree
-    //     const childItem = new ActionTreeNode()
-    //     childItem.typeName = key
-    //     // @ts-ignore
-    //     if (DisplayName) childItem.displayName = DisplayName
-    //     if (DisplayDescription)
-    //       // @ts-ignore
-    //       childItem.displayDescription = DisplayDescription
-    //     if (
-    //       //@ts-ignore
-    //       +rest?.type > -1 &&
-    //       //@ts-ignore
-    //       rest?.type !== null &&
-    //       //@ts-ignore
-    //       rest?.type !== undefined
-    //     ) {
-    //       const actionState = rest as unknown as Action
-    //       childItem.type = [...currentKeyBank, value.constructor.name].join(
-    //         " -> "
-    //       )
-    //       if (!childItem.displayName && actionState.name)
-    //         childItem.displayName = actionState.name
-    //       if (!childItem.displayDescription && actionState.description)
-    //         childItem.displayDescription = actionState.description
-    //       childItem.action = actionState
-    //     } else {
-    //       childItem.type = currentKeyBank.join(" -> ")
-    //       recursiveActionAppending([rest], childItem, currentKeyBank)
-    //     }
-    //     root.actionTreeItems.push(childItem)
-    //   }
-    // )
-  })
+  keyBank: string[] = []
+): ActionTreeNode | null {
+  // children.forEach((actionParent: T[] | ActionBranch) => {
+  // Object.entries(actionParent).forEach(
+  //   ([key, value]: [string, ActionTree | ActionBranch]) => {
+  //     const currentKeyBank = [...keyBank, key]
+  //     const { DisplayDescription, DisplayName, ...rest } = value as ActionTree
+  //     const childItem = new ActionTreeNode()
+  //     childItem.typeName = key
+  //     // @ts-ignore
+  //     if (DisplayName) childItem.displayName = DisplayName
+  //     if (DisplayDescription)
+  //       // @ts-ignore
+  //       childItem.displayDescription = DisplayDescription
+  //     if (
+  //       //@ts-ignore
+  //       +rest?.type > -1 &&
+  //       //@ts-ignore
+  //       rest?.type !== null &&
+  //       //@ts-ignore
+  //       rest?.type !== undefined
+  //     ) {
+  //       const actionState = rest as unknown as Action
+  //       childItem.type = [...currentKeyBank, value.constructor.name].join(
+  //         " -> "
+  //       )
+  //       if (!childItem.displayName && actionState.name)
+  //         childItem.displayName = actionState.name
+  //       if (!childItem.displayDescription && actionState.description)
+  //         childItem.displayDescription = actionState.description
+  //       childItem.action = actionState
+  //     } else {
+  //       childItem.type = currentKeyBank.join(" -> ")
+  //       recursiveActionAppending([rest], childItem, currentKeyBank)
+  //     }
+  //     root.actionTreeItems.push(childItem)
+  //   }
+  // )
+  // })
 
-  return root
+  return null
 }
 
-export class TypeAuthContextHelper {
+export class TypeAuthContextHelper<T> {
   ActionBank: Array<ActionBankItem> = []
   //   private actionBank: Array<ActionBankItem> = []
 
@@ -100,7 +99,7 @@ export class TypeAuthContextHelper {
   private accessValueWildCard(
     targetAction: ActionBankItem,
     actionToMatch: ActionBase,
-    actionTrees: ActionTree[] = []
+    actionTrees: T[] = []
   ): number | string {
     // let targetTextAction: TextAction | null = null
     // for (let i = 0; i < actionTrees.length; i++) {
@@ -134,7 +133,7 @@ export class TypeAuthContextHelper {
 
   accessValue(
     actionToMatch: ActionBase,
-    actionTrees: ActionTree[] = []
+    actionTrees: T[] = []
   ): number | string {
     const targetActions = this.getActions(actionToMatch)
 
@@ -184,7 +183,7 @@ export class TypeAuthContextHelper {
   }
 
   generateActionTree(
-    actionTrees: Array<ActionTree>,
+    actionTrees: T[],
     rootActionTree?: ActionTreeNode
   ): ActionTreeNode {
     //   let root: ActionTreeNode
