@@ -1,13 +1,13 @@
-import { Action, DynamicAction } from "./actions"
-import { DynamicTextAction, TextAction } from "./text"
-import { DynamicReadAction, ReadAction } from "./read"
-import { BooleanAction, DynamicBooleanAction } from "./boolean"
-import { DecimalAction, DynamicDecimalAction } from "./decimal"
-import { DynamicReadWriteAction, ReadWriteAction } from "./readWrite"
+import { Action, DynamicAction } from "./Action"
+import { DynamicTextAction, TextAction } from "./TextAction"
+import { DynamicReadAction, ReadAction } from "./ReadAction"
+import { BooleanAction, DynamicBooleanAction } from "./BooleanAction"
+import { DecimalAction, DynamicDecimalAction } from "./DecimalAction"
+import { DynamicReadWriteAction, ReadWriteAction } from "./ReadWriteAction"
 import {
   ReadWriteDeleteAction,
   DynamicReadWriteDeleteAction,
-} from "./readWriteDelete"
+} from "./ReadWriteDeleteAction"
 
 export enum ActionType {
   Read = 0,
@@ -31,14 +31,4 @@ type readWrite = ReadWriteAction | DynamicReadWriteAction
 type readWriteDelete = ReadWriteDeleteAction | DynamicReadWriteDeleteAction
 
 export type ActionBranch =
-  | (text | read | bool | action | decimal | readWrite | readWriteDelete)
-  | branchInfo
-
-type branchInfo = {
-  DisplayName?: string
-  DisplayDescription?: string
-}
-
-export type ActionTree = {
-  [key: string]: ActionBranch | ActionTree
-}
+  | text | read | bool | action | decimal | readWrite | readWriteDelete

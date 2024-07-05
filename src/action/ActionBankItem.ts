@@ -1,29 +1,23 @@
-import { Access } from "../access"
 import { Action } from "."
+import { Access } from "../access"
 
 export class ActionBankItem {
-  action: Action
+  actionBase?: Action
+  accessList: Access[] = []
   accessValue?: string | number
-  accessList: Array<Access> = []
 
-  type: string
-
-  subActionBankItems: Array<ActionBankItem> = []
+  subActionBankItems: ActionBankItem[] = []
 
   constructor({
-    type,
     action,
     accessList,
     accessValue,
   }: {
-    type: string
-    action: Action
-    accessList?: Array<Access>
+    action?: Action
+    accessList?: Access[]
     accessValue?: string | number
   }) {
-    this.type = type
-    this.action = action
-
+    if (action) this.actionBase = action
     if (accessList) this.accessList = accessList
     if (accessValue) this.accessValue = accessValue
   }

@@ -6,5 +6,5 @@ export enum Access {
 }
 
 export type AccessTree = {
-  [key: string]: AccessTree | Array<Access> | string | number
+  [key: string]: AccessTree | Access[] | string | number
 }

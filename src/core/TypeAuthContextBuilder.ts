@@ -3,26 +3,25 @@ import { ActionTree } from "../action"
 import { TypeAuthContext } from "./TypeAuthContext"
 
 export class TypeAuthContextBuilder {
-  private actionTrees: Array<ActionTree>
-  private accessTrees: Array<AccessTree>
+  private actionTrees: ActionTree[]
+  private accessTrees: AccessTree[]
 
   constructor() {
     this.accessTrees = []
     this.actionTrees = []
   }
 
-  public addAccessTree(newAccess: AccessTree = {}): TypeAuthContextBuilder {
-    const validatedAccessTree = Object.keys(newAccess).length ? newAccess : {}
-    this.accessTrees.push(validatedAccessTree)
+  addAccessTree(newAccess: AccessTree): TypeAuthContextBuilder {
+    this.accessTrees.push(newAccess)
     return this
   }
 
-  public addActionTree(actionTreeType: ActionTree): TypeAuthContextBuilder {
+  addActionTree(actionTreeType: ActionTree): TypeAuthContextBuilder {
     this.actionTrees.push(actionTreeType)
     return this
   }
 
-  public build(): TypeAuthContext {
+  build(): TypeAuthContext {
     return new TypeAuthContext(this.accessTrees, this.actionTrees)
   }
 }

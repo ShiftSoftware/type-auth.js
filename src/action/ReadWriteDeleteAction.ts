@@ -1,11 +1,9 @@
 import { ActionType } from "./constants"
-import { Action, DynamicAction } from "./actions"
+import { Action, DynamicAction } from "./Action"
 
 export class ReadWriteDeleteAction extends Action {
-  constructor(name?: string, description?: string)
-
   constructor(name?: string, description?: string) {
-    super(ActionType.ReadWriteDelete)
+    super({ type: ActionType.ReadWriteDelete })
 
     if (name) this.name = name
 
@@ -14,10 +12,8 @@ export class ReadWriteDeleteAction extends Action {
 }
 
 export class DynamicReadWriteDeleteAction extends DynamicAction {
-  constructor(name?: string, description?: string)
-
   constructor(name?: string, description?: string) {
-    super(ActionType.ReadWriteDelete)
+    super({ type: ActionType.ReadWriteDelete })
 
     if (name) this.name = name
 

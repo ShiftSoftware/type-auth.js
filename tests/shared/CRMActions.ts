@@ -1,51 +1,50 @@
 import {
   ReadAction,
-  ActionTree,
   TextAction,
   DecimalAction,
   ReadWriteAction,
   ReadWriteDeleteAction,
 } from "../../src/action"
 
-const CRMActions = {
-  CRMActions: {
-    DisplayName: "CRM Actions",
-    DisplayDescription: "Actions Related to the CRM Module.",
+export class CRMActions {
+  static Name = "CRM Actions"
 
-    Customers: new ReadWriteDeleteAction("Customers"),
+  static Description = "Actions Related to the CRM Module."
 
-    DiscountVouchers: new ReadWriteDeleteAction("Discount Vouchers"),
+  static Tickets = new ReadWriteAction("Tickets")
 
-    DiscountValue: new TextAction("Sale Discount", {
-      description: "",
-      minimumAccess: "0",
-      maximumAccess: "100",
-      comparer: (a, b) => (a && b ? Math.max(+a, +b).toString() : null),
-    }),
+  static Customers = new ReadWriteDeleteAction("Customers")
 
-    DecimalDiscount: new DecimalAction("Sale Discount (Decimal)", {
-      minimumAccess: 0,
-      maximumAccess: 100.0,
-    }),
+  static SocialMediaComments = new ReadAction("Social Media Comments")
 
-    Tickets: new ReadWriteAction("Tickets"),
+  static DiscountVouchers = new ReadWriteDeleteAction("Discount Vouchers")
 
-    SocialMediaComments: new ReadAction("Social Media Comments"),
+  static DiscountValue = new TextAction({
+    description: "",
+    minimumAccess: "0",
+    maximumAccess: "100",
+    name: "Sale Discount",
+    comparer: (a, b) => (a && b ? Math.max(+a, +b).toString() : null),
+  })
 
-    WorkSchedule: new TextAction("Work Schedule", {
-      description:
-        "One or more time slots allowed for operation. Certain actions are not allowed outside work schedule.",
-      maximumAccess: "00:00:00 - 23:59:59",
-      comparer: (a, b) => {
-        const joined: string[] = []
+  static DecimalDiscount = new DecimalAction({
+    minimumAccess: 0,
+    maximumAccess: 100.0,
+    name: "Sale Discount (Decimal)",
+  })
 
-        if (a !== null) joined.push(...a.split(",").map((x) => x.trim()))
-        if (b !== null) joined.push(...b.split(",").map((x) => x.trim()))
+  static WorkSchedule = new TextAction({
+    name: "Work Schedule",
+    description:
+      "One or more time slots allowed for operation. Certain actions are not allowed outside work schedule.",
+    maximumAccess: "00:00:00 - 23:59:59",
+    comparer: (a, b) => {
+      const joined: string[] = []
 
-        return joined.join(", ")
-      },
-    }),
-  },
+      if (a !== null) joined.push(...a.split(",").map((x) => x.trim()))
+      if (b !== null) joined.push(...b.split(",").map((x) => x.trim()))
+
+      return joined.join(", ")
+    },
+  })
 }
-
-export default CRMActions

@@ -1,11 +1,9 @@
 import { ActionType } from "./constants"
-import { Action, DynamicAction } from "./actions"
+import { Action, DynamicAction } from "./Action"
 
 export class BooleanAction extends Action {
-  constructor(name?: string, description?: string)
-
   constructor(name?: string, description?: string) {
-    super(ActionType.Boolean)
+    super({ type: ActionType.Boolean })
 
     if (name) this.name = name
 
@@ -14,10 +12,8 @@ export class BooleanAction extends Action {
 }
 
 export class DynamicBooleanAction extends DynamicAction {
-  constructor(name?: string, description?: string)
-
   constructor(name?: string, description?: string) {
-    super(ActionType.Boolean)
+    super({ type: ActionType.Boolean })
 
     if (name) this.name = name
 
