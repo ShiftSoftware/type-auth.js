@@ -1,17 +1,13 @@
-import { isAfter, isBefore, isEqual, parse, parseISO } from "date-fns"
+import { isAfter, isBefore, isEqual, parse } from "date-fns"
 
-import CRMActions from "./CRMActions"
 import { AccessTree } from "../../src/access"
-import { actionProxy } from "../../src/action"
-
-import { getTypeAuthContext } from "./getTypeAuthContext"
-
-const CRM = actionProxy(CRMActions).CRMActions
+import { CRMActions } from "../../examples/actions/CRMActions"
+import { getTypeAuthContext } from "../../src/utils/getTypeAuthContext"
 
 export const timeWithinRange = (currentTime: Date, accessFile: AccessTree) => {
   const tAuth = getTypeAuthContext(accessFile)
 
-  const schedule = tAuth.accessValue(CRM.WorkSchedule) as string | null
+  const schedule = tAuth.accessValue(CRMActions.WorkSchedule) as string | null
 
   if (schedule) {
     const timeSlots = schedule.split(",").map((slot) => slot.trim())
