@@ -1,3 +1,4 @@
+import saveToFile from "../../saveToFile"
 import { Access, AccessTree } from "../access"
 import {
   Action,
@@ -9,60 +10,31 @@ import {
   TextAction,
   DecimalAction,
   BooleanAction,
+  ActionTree,
 } from "../action"
+import { flatObject } from "../utils"
+import { recursiveActionAppending } from "./recursiveActionAppending"
 
-function recursiveActionAppending<T>(
-  children: T[],
-  root: ActionTreeNode,
-  keyBank: string[] = []
-): ActionTreeNode | null {
-  // children.forEach((actionParent: T[] | ActionBranch) => {
-  // Object.entries(actionParent).forEach(
-  //   ([key, value]: [string, ActionTree | ActionBranch]) => {
-  //     const currentKeyBank = [...keyBank, key]
-  //     const { DisplayDescription, DisplayName, ...rest } = value as ActionTree
-  //     const childItem = new ActionTreeNode()
-  //     childItem.typeName = key
-  //     // @ts-ignore
-  //     if (DisplayName) childItem.displayName = DisplayName
-  //     if (DisplayDescription)
-  //       // @ts-ignore
-  //       childItem.displayDescription = DisplayDescription
-  //     if (
-  //       //@ts-ignore
-  //       +rest?.type > -1 &&
-  //       //@ts-ignore
-  //       rest?.type !== null &&
-  //       //@ts-ignore
-  //       rest?.type !== undefined
-  //     ) {
-  //       const actionState = rest as unknown as Action
-  //       childItem.type = [...currentKeyBank, value.constructor.name].join(
-  //         " -> "
-  //       )
-  //       if (!childItem.displayName && actionState.name)
-  //         childItem.displayName = actionState.name
-  //       if (!childItem.displayDescription && actionState.description)
-  //         childItem.displayDescription = actionState.description
-  //       childItem.action = actionState
-  //     } else {
-  //       childItem.type = currentKeyBank.join(" -> ")
-  //       recursiveActionAppending([rest], childItem, currentKeyBank)
-  //     }
-  //     root.actionTreeItems.push(childItem)
-  //   }
-  // )
-  // })
+export class TypeAuthContextHelper {
+  actionBank: ActionBankItem[] = []
 
-  return null
-}
+  generateActionTree(
+    actionTrees: ActionTree[],
+    rootActionTree?: ActionTreeNode
+  ): ActionTreeNode {
+    let root: ActionTreeNode
 
-export class TypeAuthContextHelper<T> {
-  ActionBank: Array<ActionBankItem> = []
-  //   private actionBank: Array<ActionBankItem> = []
+    if (rootActionTree) root = rootActionTree
+    else {
+      root = new ActionTreeNode()
+      root.id = "Root"
+    }
 
-  constructor() {
-    // this.actionBank = []
+    const gg = recursiveActionAppending(actionTrees, root)
+
+    saveToFile(gg)
+
+    return gg
   }
 
   private getActions(actionToMatch: ActionBase): ActionBankItem[] {
@@ -99,7 +71,7 @@ export class TypeAuthContextHelper<T> {
   private accessValueWildCard(
     targetAction: ActionBankItem,
     actionToMatch: ActionBase,
-    actionTrees: T[] = []
+    actionTrees: ActionTree[] = []
   ): number | string {
     // let targetTextAction: TextAction | null = null
     // for (let i = 0; i < actionTrees.length; i++) {
@@ -133,7 +105,7 @@ export class TypeAuthContextHelper<T> {
 
   accessValue(
     actionToMatch: ActionBase,
-    actionTrees: T[] = []
+    actionTrees: ActionTree[] = []
   ): number | string {
     const targetActions = this.getActions(actionToMatch)
 
@@ -182,91 +154,51 @@ export class TypeAuthContextHelper<T> {
     return "0"
   }
 
-  generateActionTree(
-    actionTrees: T[],
-    rootActionTree?: ActionTreeNode
-  ): ActionTreeNode {
-    //   let root: ActionTreeNode
+  private getActionNodeByPath(
+    actionCursor: ActionTreeNode,
+    actionPath: string
+  ): ActionTreeNode | null {
+    if (actionCursor.path === actionPath) return actionCursor
 
-    //   if (rootActionTree) root = rootActionTree
-    //   else {
-    //     root = new ActionTreeNode()
+    if (actionPath.startsWith(actionCursor.path))
+      for (
+        let index = 0;
+        index < actionCursor.actionTreeItems.length;
+        index++
+      ) {
+        const foundedTreeNode = this.getActionNodeByPath(
+          actionCursor.actionTreeItems[index],
+          actionPath
+        )
 
-    //     root.typeName = "Root"
-    //   }
+        if (foundedTreeNode) return foundedTreeNode
+      }
 
-    //   return recursiveActionAppending(actionTrees, root)
-    // }
-
-    // populateActionBank(
-    //   actionCursor: ActionTreeNode,
-    //   accessCursor: Array<AccessTree>
-    // ) {
-    //   if (actionCursor.dynamicSubitem) return
-
-    //   accessCursor.forEach((accessItem: AccessTree) => {
-    //     Object.entries(accessItem).forEach(([key, value]) => {
-    //       if (value === null || value === undefined) return
-
-    //       if (actionCursor.typeName === "Root") {
-    //         const selectedAction = actionCursor.actionTreeItems.find(
-    //           (actionItem: ActionTreeNode) => actionItem.typeName === key
-    //         )
-
-    //         if (selectedAction)
-    //           return this.populateActionBank(selectedAction, accessCursor)
-    //       } else {
-    //         if (Array.isArray(value) && key === actionCursor.typeName) {
-    //           const itemAction = actionCursor.action as Action
-
-    //           this.ActionBank.push(
-    //             new ActionBankItem({
-    //               action: itemAction,
-    //               accessList: value,
-    //               type: actionCursor.type,
-    //             })
-    //           )
-
-    //           return
-    //         } else if (
-    //           (typeof value === "number" ||
-    //             typeof value === "string" ||
-    //             typeof value === "boolean" ||
-    //             typeof value === "number") &&
-    //           key === actionCursor.typeName
-    //         ) {
-    //           const itemAction = actionCursor.action as Action
-    //           this.ActionBank.push(
-    //             new ActionBankItem({
-    //               action: itemAction,
-    //               accessValue: value,
-    //               type: actionCursor.type,
-    //             })
-    //           )
-
-    //           return
-    //         } else if (value) {
-    //           Object.entries(value).forEach(([subKey, subValue]) => {
-    //             const selectedSubAction = actionCursor.actionTreeItems.find(
-    //               (subActionItem: ActionTreeNode) =>
-    //                 subActionItem.typeName === subKey
-    //             )
-
-    //             if (selectedSubAction)
-    //               this.populateActionBank(selectedSubAction, [
-    //                 { [subKey]: subValue },
-    //               ])
-    //           })
-    //         }
-    //       }
-    //     })
-    //   })
-    console.log(99)
-
-    return new ActionTreeNode()
+    return null
   }
 
-  locateActionInBank(actionToCheck: ActionBase): Array<ActionBankItem> {
+  populateActionBank(actionCursor: ActionTreeNode, accessCursor: AccessTree[]) {
+    accessCursor.forEach((accessTree) => {
+      const flattedAccessTree = flatObject(accessTree) as {
+        [key: string]: Access[] | number | string
+      }
+
+      Object.entries(flattedAccessTree).forEach(([accessPath, accessValue]) => {
+        const treeNode = this.getActionNodeByPath(actionCursor, accessPath)
+
+        if (treeNode) {
+          const newBankItem = new ActionBankItem({ action: treeNode.action })
+          if (Array.isArray(accessValue))
+            newBankItem.accessList = [...accessValue]
+          else newBankItem.accessValue = accessValue
+
+          this.actionBank.push(newBankItem)
+        }
+      })
+    })
+  }
+
+  locateActionInBank(actionToCheck: ActionBase): ActionBankItem[] {
     // const filteredActions = this.ActionBank.filter(
     //   (item) => item.action === actionToCheck
     // )

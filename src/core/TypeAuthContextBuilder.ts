@@ -1,8 +1,9 @@
 import { AccessTree } from "../access"
+import { ActionTree } from "../action"
 import { TypeAuthContext } from "./TypeAuthContext"
 
-export class TypeAuthContextBuilder<T> {
-  private actionTrees: T[]
+export class TypeAuthContextBuilder {
+  private actionTrees: ActionTree[]
   private accessTrees: AccessTree[]
 
   constructor() {
@@ -10,17 +11,17 @@ export class TypeAuthContextBuilder<T> {
     this.actionTrees = []
   }
 
-  addAccessTree(newAccess: AccessTree): TypeAuthContextBuilder<T> {
+  addAccessTree(newAccess: AccessTree): TypeAuthContextBuilder {
     this.accessTrees.push(newAccess)
     return this
   }
 
-  addActionTree(actionTreeType: T): TypeAuthContextBuilder<T> {
+  addActionTree(actionTreeType: ActionTree): TypeAuthContextBuilder {
     this.actionTrees.push(actionTreeType)
     return this
   }
 
-  build(): TypeAuthContext<T> {
+  build(): TypeAuthContext {
     return new TypeAuthContext(this.accessTrees, this.actionTrees)
   }
 }

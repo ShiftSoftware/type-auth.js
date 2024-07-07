@@ -6,34 +6,33 @@ import {
   ReadWriteDeleteAction,
 } from "../../src/action"
 
-export class CRMActions {
-  static Name = "CRM Actions"
+export const CRMActions = {
+  Name: "CRM Actions",
+  Description: "Actions Related to the CRM Module.",
 
-  static Description = "Actions Related to the CRM Module."
+  Customers: new ReadWriteDeleteAction("Customers"),
 
-  static Tickets = new ReadWriteAction("Tickets")
+  DiscountVouchers: new ReadWriteDeleteAction("Discount Vouchers"),
 
-  static Customers = new ReadWriteDeleteAction("Customers")
-
-  static SocialMediaComments = new ReadAction("Social Media Comments")
-
-  static DiscountVouchers = new ReadWriteDeleteAction("Discount Vouchers")
-
-  static DiscountValue = new TextAction({
+  DiscountValue: new TextAction({
+    name: "Sale Discount",
     description: "",
     minimumAccess: "0",
     maximumAccess: "100",
-    name: "Sale Discount",
     comparer: (a, b) => (a && b ? Math.max(+a, +b).toString() : null),
-  })
+  }),
 
-  static DecimalDiscount = new DecimalAction({
+  DecimalDiscount: new DecimalAction({
+    name: "Sale Discount (Decimal)",
     minimumAccess: 0,
     maximumAccess: 100.0,
-    name: "Sale Discount (Decimal)",
-  })
+  }),
 
-  static WorkSchedule = new TextAction({
+  Tickets: new ReadWriteAction("Tickets"),
+
+  SocialMediaComments: new ReadAction("Social Media Comments"),
+
+  WorkSchedule: new TextAction({
     name: "Work Schedule",
     description:
       "One or more time slots allowed for operation. Certain actions are not allowed outside work schedule.",
@@ -46,5 +45,7 @@ export class CRMActions {
 
       return joined.join(", ")
     },
-  })
+  }),
 }
+
+export default CRMActions

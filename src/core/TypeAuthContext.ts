@@ -1,19 +1,19 @@
 import saveToFile from "../../saveToFile"
 import { Access, AccessTree } from "../access"
-import { ActionTreeNode, ActionBase } from "../action"
+import { ActionTreeNode, ActionBase, ActionTree } from "../action"
 import { TypeAuthContextHelper } from "./TypeAuthContextHelper"
 
-export class TypeAuthContext<T> {
+export class TypeAuthContext {
   private accessTrees: AccessTree[] // TODO: Not used yet
-  private actionTrees: T[]
+  private actionTrees: ActionTree[]
 
   private actionTree: ActionTreeNode
 
-  private typeAuthContextHelper: TypeAuthContextHelper<T>
+  private typeAuthContextHelper: TypeAuthContextHelper
 
   constructor(
     accessTrees: AccessTree[] | AccessTree,
-    actionTrees: T[] | T = []
+    actionTrees: ActionTree[] | ActionTree = []
   ) {
     if (Array.isArray(accessTrees)) this.accessTrees = accessTrees
     else this.accessTrees = [accessTrees]
@@ -27,10 +27,10 @@ export class TypeAuthContext<T> {
       this.actionTrees
     )
 
-    // this.typeAuthContextHelper.populateActionBank(
-    //   this.actionTree,
-    //   this.accessTrees
-    // )
+    this.typeAuthContextHelper.populateActionBank(
+      this.actionTree,
+      this.accessTrees
+    )
   }
 
   canAccess(action: ActionBase): boolean {

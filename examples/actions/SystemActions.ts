@@ -1,13 +1,10 @@
 import { BooleanAction, ReadWriteDeleteAction } from "../../src/action"
 
-export class SystemActions {
-  static DisplayName = "System Actions"
-  static DisplayDescription =
-    "Actions related to the System Module and Administration."
-
-  static Login = {
-    DisplayName: "Login",
-
+export const SystemActions = {
+  Name: "System Actions",
+  Description: "Actions related to the System Module and Administration.",
+  Login: {
+    Name: "Login",
     MultipleSession: new BooleanAction(
       "Multiple Login Sessions",
       "Ability to have multiple sessions. Or Be logged in on multiple browsers/devices at once."
@@ -17,15 +14,12 @@ export class SystemActions {
       "Destroy Other Sessions",
       "Ability to destroy other login sessions. Or Logout from other browsers/devices when trying to login on a new browser/device."
     ),
-  }
+  },
 
-  static UserModule = {
-    DisplayName: "Users",
-
-    DisplayDescription: "Actions Related to the Users Module",
-
+  UserModule: {
+    Name: "Users",
+    Description: "Actions Related to the Users Module",
     Users: new ReadWriteDeleteAction("User Access"),
-
     SetOrResetPassword: new BooleanAction(
       "Set or Reset Passwords",
       "Ability to Set or Reset Users' Passwords."
@@ -37,5 +31,5 @@ export class SystemActions {
     ),
 
     Roles: new ReadWriteDeleteAction("Role Access"),
-  }
+  },
 }
