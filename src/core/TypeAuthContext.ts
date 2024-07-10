@@ -1,7 +1,6 @@
-import saveToFile from "../../saveToFile"
 import { Access, AccessTree } from "../access"
-import { ActionTreeNode, ActionBase, ActionTree } from "../action"
 import { TypeAuthContextHelper } from "./TypeAuthContextHelper"
+import { ActionTreeNode, ActionBase, ActionTree } from "../action"
 
 export class TypeAuthContext {
   private accessTrees: AccessTree[] // TODO: Not used yet

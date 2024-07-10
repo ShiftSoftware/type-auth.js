@@ -1,7 +1,9 @@
-import { Affiliates } from "./examples/accesses/Affiliates"
-import { CRMActions } from "./examples/actions/CRMActions"
-import saveToFile from "./saveToFile"
-import { SystemActions } from "./examples/actions"
+import { Affiliates, CRMActions } from "./examples"
 import { getTypeAuthContext } from "./src/core"
+import saveToFile from "./saveToFile"
 
-getTypeAuthContext(Affiliates)
+const tAuth = getTypeAuthContext(Affiliates)
+
+saveToFile(Affiliates)
+
+console.log(tAuth.canDelete(CRMActions.Customers))

@@ -1,6 +1,6 @@
 import { AccessTree } from "../access"
 
-import { CRMActions, SystemActions } from "../../examples/actions"
+import { CRMActions, SystemActions } from "../../examples"
 
 import { TypeAuthContext, TypeAuthContextBuilder } from "."
 

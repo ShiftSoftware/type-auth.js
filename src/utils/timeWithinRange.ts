@@ -1,8 +1,8 @@
 import { isAfter, isBefore, isEqual, parse } from "date-fns"
 
 import { AccessTree } from "../access"
+import { CRMActions } from "../../examples"
 import { getTypeAuthContext } from "../core"
-import { CRMActions } from "../../examples/actions/CRMActions"
 
 export const timeWithinRange = (currentTime: Date, accessFile: AccessTree) => {
   const tAuth = getTypeAuthContext(accessFile)

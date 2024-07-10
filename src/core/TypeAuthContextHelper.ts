@@ -1,15 +1,11 @@
 import { Access, AccessTree } from "../access"
 import {
-  Action,
-  ActionBranch,
+  TextAction,
+  ActionBase,
+  ActionTree,
+  DecimalAction,
   ActionTreeNode,
   ActionBankItem,
-  ActionBase,
-  DynamicAction,
-  TextAction,
-  DecimalAction,
-  BooleanAction,
-  ActionTree,
 } from "../action"
 import { flatObject } from "../utils"
 import { recursiveActionAppending } from "./recursiveActionAppending"
@@ -189,45 +185,5 @@ export class TypeAuthContextHelper {
         }
       })
     })
-  }
-
-  locateActionInBank(actionToCheck: ActionBase): ActionBankItem[] {
-    // const filteredActions = this.ActionBank.filter(
-    //   (item) => item.action === actionToCheck
-    // )
-
-    // filteredActions.forEach((item) => {
-    //   actionMatches.push(item)
-    //   if (actionToCheck instanceof DynamicAction) {
-    //     actionMatches.push(
-    //       ...item.subActionBankItems.filter((x) => {
-    //         const action = x.action as DynamicAction
-
-    //         return (
-    //           action.id === id ||
-    //           (id !== null &&
-    //             selfId !== null &&
-    //             selfId.includes(id || "") &&
-    //             action.id === TypeAuthContext.selfReferenceKey)
-    //         )
-    //       })
-    //     )
-    //   }
-    // })
-
-    // return actionMatches.filter((act) => {
-    //   const dynamicAct = act.action as DynamicAction
-    //   if (
-    //     id != null &&
-    //     dynamicAct &&
-    //     !dynamicAct.id &&
-    //     act.accessList.length == 0
-    //   )
-    //     return true
-
-    //   return false
-    // })
-    // return filteredActions
-    return []
   }
 }
