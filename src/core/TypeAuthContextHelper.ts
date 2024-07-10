@@ -1,4 +1,3 @@
-import saveToFile from "../../saveToFile"
 import { Access, AccessTree } from "../access"
 import {
   Action,
@@ -30,16 +29,17 @@ export class TypeAuthContextHelper {
       root.id = "Root"
     }
 
-    const gg = recursiveActionAppending(actionTrees, root)
-
-    saveToFile(gg)
-
-    return gg
+    return recursiveActionAppending(actionTrees, root)
   }
 
   private getActions(actionToMatch: ActionBase): ActionBankItem[] {
     const targetActions = this.actionBank.filter((item) => {
-      if (!item.actionBase && actionToMatch.path.startsWith("")) return false
+      if (
+        !item.actionBase &&
+        item.path &&
+        actionToMatch.path.startsWith(item.path)
+      )
+        return true
 
       if (item.actionBase) return item.actionBase.path === actionToMatch.path
     })
@@ -63,34 +63,34 @@ export class TypeAuthContextHelper {
     actionToMatch: ActionBase,
     actionTrees: ActionTree[] = []
   ): number | string {
-    // let targetTextAction: TextAction | null = null
-    // for (let i = 0; i < actionTrees.length; i++) {
-    //   const actionTree = actionTrees[i]
+    const actionPath = actionToMatch.path.split(".")
 
-    //   let subPaths: ActionTree = actionTree
+    let targetTextAction: TextAction | null = null
 
-    //   for (let y = 0; y < actionToMatch.actionPath.length; y++) {
-    //     const targetField = actionToMatch.actionPath[y]
+    for (let i = 0; i < actionTrees.length; i++) {
+      const actionTree = actionTrees[i]
 
-    //     if (subPaths[targetField])
-    //       subPaths = subPaths[targetField] as ActionTree
-    //   }
-    //   if (subPaths instanceof TextAction) {
-    //     targetTextAction = subPaths as TextAction
-    //     break
-    //   }
-    // }
+      let subPaths: ActionTree = actionTree
+      for (let y = 0; y < actionPath.length; y++) {
+        const targetField = actionPath[y]
+        if (subPaths[targetField])
+          subPaths = subPaths[targetField] as ActionTree
+      }
+      if (subPaths instanceof TextAction) {
+        targetTextAction = subPaths as TextAction
+        break
+      }
+    }
 
-    // let returnValue: string | number
+    let returnValue: string | number
 
-    // if (targetAction.accessList.includes(Access.Maximum))
-    //   returnValue = targetTextAction?.maximumAccess || ""
-    // else returnValue = targetTextAction?.minimumAccess || ""
+    if (targetAction.accessList.includes(Access.Maximum))
+      returnValue = targetTextAction?.maximumAccess || ""
+    else returnValue = targetTextAction?.minimumAccess || ""
 
-    // return targetTextAction instanceof DecimalAction
-    //   ? +returnValue
-    //   : returnValue
-    return ""
+    return targetTextAction instanceof DecimalAction
+      ? +returnValue
+      : returnValue
   }
 
   accessValue(
@@ -177,7 +177,10 @@ export class TypeAuthContextHelper {
         const treeNode = this.getActionNodeByPath(actionCursor, accessPath)
 
         if (treeNode) {
-          const newBankItem = new ActionBankItem({ action: treeNode.action })
+          const newBankItem = new ActionBankItem({
+            path: treeNode.path,
+            action: treeNode.action,
+          })
           if (Array.isArray(accessValue))
             newBankItem.accessList = [...accessValue]
           else newBankItem.accessValue = accessValue

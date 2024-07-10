@@ -1,49 +1,42 @@
-// import { describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 
-// import CRMActions from "../shared/CRMActions"
-// import { systemActions } from "../shared/SystemActions"
-// import { salesAdmin } from "../shared/AccessTreeExamples"
-// import { getTypeAuthContext } from "../shared/getTypeAuthContext"
+import { getTypeAuthContext } from "../../src/core"
+import { CRMActions, SalesAdmin, SystemActions } from "../../examples"
 
-// import { actionProxy } from "../../src/action"
+describe("Sales admin", () => {
+  it("Full discount via wild card.", () => {
+    const tAuth = getTypeAuthContext(SalesAdmin)
 
-// const CRM = actionProxy(CRMActions).CRMActions
-// const SystemActions = actionProxy(systemActions).SystemActions
+    expect(tAuth.accessValue(CRMActions.DiscountValue)).toBe("100")
+  })
 
-// describe("Sales admin", () => {
-//   it("Full discount via wild card.", () => {
-//     const tAuth = getTypeAuthContext(salesAdmin)
+  it("Full decimal discount via wild card.", () => {
+    const tAuth = getTypeAuthContext(SalesAdmin)
 
-//     expect(tAuth.accessValue(CRM.DiscountValue)).toBe("100")
-//   })
+    expect(tAuth.accessValue(CRMActions.DecimalDiscount)).toBe(100)
+  })
 
-//   it("Full decimal discount via wild card.", () => {
-//     const tAuth = getTypeAuthContext(salesAdmin)
+  it("Only read/write users.", () => {
+    const tAuth = getTypeAuthContext(SalesAdmin)
 
-//     expect(tAuth.accessValue(CRM.DecimalDiscount)).toBe(100)
-//   })
+    expect(tAuth.canRead(SystemActions.UserModule.Users)).toBe(true)
+    expect(tAuth.canWrite(SystemActions.UserModule.Users)).toBe(true)
+    expect(tAuth.canDelete(SystemActions.UserModule.Users)).toBe(false)
+  })
 
-//   it("Only read/write users.", () => {
-//     const tAuth = getTypeAuthContext(salesAdmin)
+  it("Full access on discount voucher.", () => {
+    const tAuth = getTypeAuthContext(SalesAdmin)
 
-//     expect(tAuth.canRead(SystemActions.UserModule.Users)).toBe(true)
-//     expect(tAuth.canWrite(SystemActions.UserModule.Users)).toBe(true)
-//     expect(tAuth.canDelete(SystemActions.UserModule.Users)).toBe(false)
-//   })
+    expect(tAuth.canRead(CRMActions.DiscountVouchers)).toBe(true)
+    expect(tAuth.canWrite(CRMActions.DiscountVouchers)).toBe(true)
+    expect(tAuth.canDelete(CRMActions.DiscountVouchers)).toBe(true)
+  })
 
-//   it("Full access on discount voucher.", () => {
-//     const tAuth = getTypeAuthContext(salesAdmin)
+  it("Full access on tickets & comments.", () => {
+    const tAuth = getTypeAuthContext(SalesAdmin)
 
-//     expect(tAuth.canRead(CRM.DiscountVouchers)).toBe(true)
-//     expect(tAuth.canWrite(CRM.DiscountVouchers)).toBe(true)
-//     expect(tAuth.canDelete(CRM.DiscountVouchers)).toBe(true)
-//   })
-
-//   it("Full access on tickets & comments.", () => {
-//     const tAuth = getTypeAuthContext(salesAdmin)
-
-//     expect(tAuth.canRead(CRM.Tickets)).toBe(true)
-//     expect(tAuth.canWrite(CRM.Tickets)).toBe(true)
-//     expect(tAuth.canDelete(CRM.SocialMediaComments)).toBe(true)
-//   })
-// })
+    expect(tAuth.canRead(CRMActions.Tickets)).toBe(true)
+    expect(tAuth.canWrite(CRMActions.Tickets)).toBe(true)
+    expect(tAuth.canDelete(CRMActions.SocialMediaComments)).toBe(true)
+  })
+})
