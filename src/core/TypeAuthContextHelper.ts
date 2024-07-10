@@ -38,32 +38,22 @@ export class TypeAuthContextHelper {
   }
 
   private getActions(actionToMatch: ActionBase): ActionBankItem[] {
-    // const targetActions = this.ActionBank.filter((item) => {
-    //   const itemPath = item.type.split(" -> ")
-    //   const targetPath = actionToMatch.actionPath
-    //   if (!item.action) {
-    //     const checkingDepth = Math.min(itemPath.length, targetPath.length)
-    //     for (let idx = 0; idx < checkingDepth; idx++) {
-    //       if (itemPath[idx] === targetPath[idx]) {
-    //         if (Array.isArray(item.accessList) && item.accessList.length > 0)
-    //           return true
-    //       } else break
-    //     }
-    //   }
-    //   return itemPath.slice(0, -1).join() === targetPath.join()
-    // })
-    return [new ActionBankItem({ action: new BooleanAction() })]
-    // return targetActions
+    const targetActions = this.actionBank.filter((item) => {
+      if (!item.actionBase && actionToMatch.path.startsWith("")) return false
+
+      if (item.actionBase) return item.actionBase.path === actionToMatch.path
+    })
+    return targetActions
   }
 
   can(actionToMatch: ActionBase, accessTypeToCheck: Access): boolean {
-    // const targetActions = this.getActions(actionToMatch)
+    const targetActions = this.getActions(actionToMatch)
 
-    // for (let index = 0; index < targetActions.length; index++) {
-    //   const targetAction = targetActions[index]
+    for (let index = 0; index < targetActions.length; index++) {
+      const targetAction = targetActions[index]
 
-    //   if (targetAction.accessList.includes(accessTypeToCheck)) return true
-    // }
+      if (targetAction.accessList.includes(accessTypeToCheck)) return true
+    }
 
     return false
   }

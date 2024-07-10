@@ -1,54 +1,50 @@
 import { describe, expect, it } from "vitest"
 
-import CRMActions from "../shared/CRMActions"
-import { timeWithinRange } from "../shared/helper"
-import { affiliates } from "../shared/AccessTreeExamples"
-import { getTypeAuthContext } from "../shared/getTypeAuthContext"
+import { getTypeAuthContext } from "../../src/core"
 
+import { Affiliates, CRMActions } from "../../examples"
+import { timeWithinRange } from "../../src/utils/timeWithinRange"
 import { timeSpan } from "../../src/utils"
-import { actionProxy } from "../../src/action"
-
-const CRM = actionProxy(CRMActions).CRMActions
 
 describe("Affiliate", () => {
   it("Read only on customer.", () => {
-    const tAuth = getTypeAuthContext(affiliates)
+    const tAuth = getTypeAuthContext(Affiliates)
 
-    expect(tAuth.canRead(CRM.Customers)).toBe(true)
-    expect(tAuth.canWrite(CRM.Customers)).toBe(false)
-    expect(tAuth.canDelete(CRM.Customers)).toBe(false)
+    expect(tAuth.canRead(CRMActions.Customers)).toBe(true)
+    expect(tAuth.canWrite(CRMActions.Customers)).toBe(false)
+    expect(tAuth.canDelete(CRMActions.Customers)).toBe(false)
   })
 
   it("2% Discount value.", () => {
-    const tAuth = getTypeAuthContext(affiliates)
+    const tAuth = getTypeAuthContext(Affiliates)
 
-    expect(tAuth.accessValue(CRM.DiscountValue)).toBe("2")
+    expect(tAuth.accessValue(CRMActions.DiscountValue)).toBe("2")
   })
 
   it("2.5% Decimal discount value.", () => {
-    const tAuth = getTypeAuthContext(affiliates)
+    const tAuth = getTypeAuthContext(Affiliates)
 
-    expect(tAuth.accessValue(CRM.DecimalDiscount)).toBe(2.5)
+    expect(tAuth.accessValue(CRMActions.DecimalDiscount)).toBe(2.5)
   })
 
   it("No access on tickets.", () => {
-    const tAuth = getTypeAuthContext(affiliates)
+    const tAuth = getTypeAuthContext(Affiliates)
 
-    expect(tAuth.canRead(CRM.Tickets)).toBe(false)
-    expect(tAuth.canWrite(CRM.Tickets)).toBe(false)
+    expect(tAuth.canRead(CRMActions.Tickets)).toBe(false)
+    expect(tAuth.canWrite(CRMActions.Tickets)).toBe(false)
   })
 
   it("No access on comments", () => {
-    const tAuth = getTypeAuthContext(affiliates)
+    const tAuth = getTypeAuthContext(Affiliates)
 
-    expect(tAuth.canRead(CRM.SocialMediaComments)).toBe(false)
+    expect(tAuth.canRead(CRMActions.SocialMediaComments)).toBe(false)
   })
 
   it("Work at 20 to 21", () => {
-    expect(timeWithinRange(timeSpan(20, 15, 0), affiliates)).toBe(true)
+    expect(timeWithinRange(timeSpan(20, 15, 0), Affiliates)).toBe(true)
   })
 
   it("Can't work outside 20 to 21", () => {
-    expect(timeWithinRange(timeSpan(17, 0, 0), affiliates)).toBe(false)
+    expect(timeWithinRange(timeSpan(17, 0, 0), Affiliates)).toBe(false)
   })
 })

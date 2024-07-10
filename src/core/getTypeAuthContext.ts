@@ -2,7 +2,7 @@ import { AccessTree } from "../access"
 
 import { CRMActions, SystemActions } from "../../examples/actions"
 
-import { TypeAuthContext, TypeAuthContextBuilder } from "../core"
+import { TypeAuthContext, TypeAuthContextBuilder } from "."
 
 export const getTypeAuthContext = (accessTree: AccessTree): TypeAuthContext => {
   const typeAuthContext = new TypeAuthContextBuilder()
