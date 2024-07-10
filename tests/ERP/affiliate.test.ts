@@ -3,8 +3,7 @@ import { describe, expect, it } from "vitest"
 import { getTypeAuthContext } from "../../src/core"
 
 import { Affiliates, CRMActions } from "../../examples"
-import { timeWithinRange } from "../../src/utils/timeWithinRange"
-import { timeSpan } from "../../src/utils"
+import { timeSpan, timeWithinRange } from "../../src/utils"
 
 describe("Affiliate", () => {
   it("Read only on customer.", () => {

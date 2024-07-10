@@ -1,44 +1,38 @@
-// import { describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
+import { CRMActions, CRMAgent } from "../../examples"
 
-// import CRMActions from "../shared/CRMActions"
-// import { timeWithinRange } from "../shared/helper"
-// import { CRMAgent } from "../shared/AccessTreeExamples"
-// import { getTypeAuthContext } from "../shared/getTypeAuthContext"
+import { getTypeAuthContext } from "../../src/core"
+import { timeSpan, timeWithinRange } from "../../src/utils"
 
-// import { timeSpan } from "../../src/utils"
-// import { actionProxy } from "../../src/action"
+describe("CRM Agent", () => {
+  it("10% Discount value.", () => {
+    const tAuth = getTypeAuthContext(CRMAgent)
 
-// const CRM = actionProxy(CRMActions).CRMActions
+    expect(tAuth.accessValue(CRMActions.DiscountValue)).toBe("10")
+  })
 
-// describe("CRM Agent", () => {
-//   it("10% Discount value.", () => {
-//     const tAuth = getTypeAuthContext(CRMAgent)
+  it("15% Decimal discount value.", () => {
+    const tAuth = getTypeAuthContext(CRMAgent)
 
-//     expect(tAuth.accessValue(CRM.DiscountValue)).toBe("10")
-//   })
+    expect(tAuth.accessValue(CRMActions.DecimalDiscount)).toBe(15)
+  })
 
-//   it("15% Decimal discount value.", () => {
-//     const tAuth = getTypeAuthContext(CRMAgent)
+  it("Read/Write tickets.", () => {
+    const tAuth = getTypeAuthContext(CRMAgent)
 
-//     expect(tAuth.accessValue(CRM.DecimalDiscount)).toBe(15)
-//   })
+    expect(tAuth.canRead(CRMActions.Tickets)).toBe(true)
+    expect(tAuth.canWrite(CRMActions.Tickets)).toBe(true)
+  })
 
-//   it("Read/Write tickets.", () => {
-//     const tAuth = getTypeAuthContext(CRMAgent)
+  it("Morning shift.", () => {
+    expect(timeWithinRange(timeSpan(9, 45, 0), CRMAgent)).toBe(true)
+  })
 
-//     expect(tAuth.canRead(CRM.Tickets)).toBe(true)
-//     expect(tAuth.canWrite(CRM.Tickets)).toBe(true)
-//   })
+  it("Afternoon break.", () => {
+    expect(timeWithinRange(timeSpan(13, 15, 0), CRMAgent)).toBe(false)
+  })
 
-//   it("Morning shift.", () => {
-//     expect(timeWithinRange(timeSpan(9, 45, 0), CRMAgent)).toBe(true)
-//   })
-
-//   it("Afternoon break.", () => {
-//     expect(timeWithinRange(timeSpan(13, 15, 0), CRMAgent)).toBe(false)
-//   })
-
-//   it("After work.", () => {
-//     expect(timeWithinRange(timeSpan(18, 0, 1), CRMAgent)).toBe(false)
-//   })
-// })
+  it("After work.", () => {
+    expect(timeWithinRange(timeSpan(18, 0, 1), CRMAgent)).toBe(false)
+  })
+})
