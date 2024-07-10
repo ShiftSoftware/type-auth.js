@@ -1,32 +1,24 @@
-// import { describe, expect, it } from "vitest"
+import { describe, expect, it } from "vitest"
 
-// import CRMActions from "../shared/CRMActions"
-// import { systemActions } from "../shared/SystemActions"
-// import { superAdmin } from "../shared/AccessTreeExamples"
-// import { getTypeAuthContext } from "../shared/getTypeAuthContext"
+import { CRMActions, SuperAdmin, SystemActions } from "../../examples"
+import { getTypeAuthContext, TypeAuthContext } from "../../src/core"
 
-// import { actionProxy } from "../../src/action"
-// import { TypeAuthContext } from "../../src/core/TypeAuthContext"
+describe("Affiliate", () => {
+  it("Login via wildcard.", () => {
+    const tAuth = getTypeAuthContext(SuperAdmin)
 
-// const CRM = actionProxy(CRMActions).CRMActions
-// const SystemActions = actionProxy(systemActions).SystemActions
+    expect(tAuth.canAccess(SystemActions.Login.MultipleSession)).toBe(true)
+  })
 
-// describe("Affiliate", () => {
-//   it("Login via wildcard.", () => {
-//     const tAuth = getTypeAuthContext(superAdmin)
+  it("No login.", () => {
+    const tAuth = new TypeAuthContext(SuperAdmin)
 
-//     expect(tAuth.canAccess(SystemActions.Login.MultipleSession)).toBe(true)
-//   })
+    expect(tAuth.canAccess(SystemActions.Login.MultipleSession)).toBe(false)
+  })
 
-//   it("No login.", () => {
-//     const tAuth = new TypeAuthContext(superAdmin)
+  it("Customer via wildcard.", () => {
+    const tAuth = getTypeAuthContext(SuperAdmin)
 
-//     expect(tAuth.canAccess(SystemActions.Login.MultipleSession)).toBe(false)
-//   })
-
-//   it("Customer via wildcard.", () => {
-//     const tAuth = getTypeAuthContext(superAdmin)
-
-//     expect(tAuth.canDelete(CRM.Customers)).toBe(true)
-//   })
-// })
+    expect(tAuth.canDelete(CRMActions.Customers)).toBe(true)
+  })
+})
