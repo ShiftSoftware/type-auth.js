@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest",
-    "dev": "ts-node index.ts"
+    "dev": "ts-node index.ts",
+    "type": "tsc --noEmit"
   },
   "license": "MIT",
   "devDependencies": {
