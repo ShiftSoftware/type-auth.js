@@ -1,5 +1,4 @@
-import { ActionType } from "./constants"
-import { Action, DynamicAction } from "./Action"
+import { Action, DynamicAction, ActionType } from ".."
 
 type UserDefinedFunctions = (
   a: string | null,

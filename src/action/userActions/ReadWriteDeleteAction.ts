@@ -1,9 +1,8 @@
-import { ActionType } from "./constants"
-import { Action, DynamicAction } from "./Action"
+import { Action, DynamicAction, ActionType } from ".."
 
-export class ReadWriteAction extends Action {
+export class ReadWriteDeleteAction extends Action {
   constructor(name?: string, description?: string) {
-    super({ type: ActionType.ReadWrite })
+    super({ type: ActionType.ReadWriteDelete })
 
     if (name) this.name = name
 
@@ -11,9 +10,9 @@ export class ReadWriteAction extends Action {
   }
 }
 
-export class DynamicReadWriteAction extends DynamicAction {
+export class DynamicReadWriteDeleteAction extends DynamicAction {
   constructor(name?: string, description?: string) {
-    super({ type: ActionType.ReadWrite })
+    super({ type: ActionType.ReadWriteDelete })
 
     if (name) this.name = name
 

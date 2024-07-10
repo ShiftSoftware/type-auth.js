@@ -1,5 +1,4 @@
-import { ActionType } from "./constants"
-import { Action, DynamicAction } from "./Action"
+import { Action, DynamicAction, ActionType } from ".."
 
 export class ReadAction extends Action {
   constructor(name?: string, description?: string) {
